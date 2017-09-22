@@ -1,0 +1,4 @@
+roles/KEYMGR-API/templates/generate_kek
+roles/KEYMGR-API/README.md
+roles/KEYMGR-API/templates/api-logging.conf.j2
+.copyrightignore
