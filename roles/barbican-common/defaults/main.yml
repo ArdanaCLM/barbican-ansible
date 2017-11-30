@@ -75,7 +75,7 @@ memcached_servers: "{% for x in KEYMGR.consumes_FND_MEM.members.private %}{{ x.h
 memcache_secret_key: "{{ KEYMGR.consumes_FND_MEM.vars.memcached.barbican.secret_key | quote }}"
 
 barbican_db_ca_file: "/etc/ssl/certs/ca-certificates.crt"
-barbican_database_connection_string: "mysql://{{ KEYMGR_API.consumes_FND_MDB.vars.accounts.barbican.username }}:{{ KEYMGR_API.consumes_FND_MDB.vars.accounts.barbican.password | urlencode }}@{{ KEYMGR_API.consumes_FND_MDB.vips.private[0].host }}/barbican{% if KEYMGR_API.consumes_FND_MDB.vips.private[0].use_tls %}?ssl_ca={{ barbican_db_ca_file }}{% endif %}"
+barbican_database_connection_string: "mysql+pymysql://{{ KEYMGR_API.consumes_FND_MDB.vars.accounts.barbican.username }}:{{ KEYMGR_API.consumes_FND_MDB.vars.accounts.barbican.password | urlencode }}@{{ KEYMGR_API.consumes_FND_MDB.vips.private[0].host }}/barbican{% if KEYMGR_API.consumes_FND_MDB.vips.private[0].use_tls %}?ssl_ca={{ barbican_db_ca_file }}{% endif %}"
 
 barbican_admin_vip_protocol: "{{ KEYMGR_API.advertises.vips.admin[0].protocol }}"
 barbican_admin_vip_host: "{{ KEYMGR_API.advertises.vips.admin[0].host }}"
