@@ -68,6 +68,7 @@ keystone:
   auth_url: "{{ KEYMGR_API.consumes_KEY_API.vips.private[0].url }}"
   identity_url: "{{ KEYMGR_API.consumes_KEY_API.vips.private[0].url }}"
   admin_url: "{{ KEYMGR_API.consumes_KEY_API.vips.private[0].url }}"
+  ca_file: "/etc/ssl/certs/ca-certificates.crt"
 
 memcached_servers: "{% for x in KEYMGR.consumes_FND_MEM.members.private %}{{ x.host }}:{{ x.port }}{%if
  not loop.last %},{% endif %}{% endfor %}"

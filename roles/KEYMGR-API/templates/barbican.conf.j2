@@ -167,6 +167,7 @@ password = {{ barbican_service_password }}
 user_domain_name = {{ keystone.default_domain_name }}
 project_name = {{ keystone.service_tenant_name }}
 project_domain_name = {{ keystone.default_domain_name }}
+cafile = {{ keystone.ca_file }}
 service_token_roles_required = true
 service_token_roles = admin
 memcached_servers = {{ memcached_servers }}
