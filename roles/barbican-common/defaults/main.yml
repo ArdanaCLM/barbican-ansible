@@ -69,6 +69,10 @@ keystone:
   identity_url: "{{ KEYMGR_API.consumes_KEY_API.vips.private[0].url }}"
   admin_url: "{{ KEYMGR_API.consumes_KEY_API.vips.private[0].url }}"
 
+memcached_servers: "{% for x in KEYMGR.consumes_FND_MEM.members.private %}{{ x.host }}:{{ x.port }}{%if
+ not loop.last %},{% endif %}{% endfor %}"
+memcache_secret_key: "{{ KEYMGR.consumes_FND_MEM.vars.memcached.barbican.secret_key | quote }}"
+
 barbican_db_ca_file: "/etc/ssl/certs/ca-certificates.crt"
 barbican_database_connection_string: "mysql://{{ KEYMGR_API.consumes_FND_MDB.vars.accounts.barbican.username }}:{{ KEYMGR_API.consumes_FND_MDB.vars.accounts.barbican.password | urlencode }}@{{ KEYMGR_API.consumes_FND_MDB.vips.private[0].host }}/barbican{% if KEYMGR_API.consumes_FND_MDB.vips.private[0].use_tls %}?ssl_ca={{ barbican_db_ca_file }}{% endif %}"
 
@@ -120,15 +124,15 @@ _mq_hosts_list: "{{ KEYMGR_API.consumes_FND_RMQ.members.private | default (KEYMG
 barbican_control_exchange: openstack
 barbican_notification_driver: log
 
-barbican_rabbit_hosts_port_pair:
-  "{% for x in _mq_hosts_list -%}
-   {{ x.host }}:{{ x.port }}
-   {%- if not loop.last -%},{% endif %}
-   {%- endfor %}"
-
 barbican_rabbit_user: "{{ KEYMGR.consumes_FND_RMQ.vars.accounts.barbican.username }}"
 barbican_rabbit_password: "{{ KEYMGR.consumes_FND_RMQ.vars.accounts.barbican.password }}"
 barbican_rabbit_use_ssl: "{{ KEYMGR.consumes_FND_RMQ.members.private[0].use_tls }}"
+barbican_rabbit_hosts_url: >
+  {%- for x in _mq_hosts_list -%}
+    {{ barbican_rabbit_user }}:{{ barbican_rabbit_password }}@{{ x.host }}:{{ x.port }}{%- if not loop.last -%},{%- endif -%}
+  {%- endfor -%}
+barbican_transport_url: "rabbit://{{ barbican_rabbit_hosts_url }}//"
+
 
 barbican_api_ssl_client_key: "{{ barbican_conf_dir }}/ssl/certs/client.key"
 barbican_api_ssl_client_cert: "{{ barbican_conf_dir }}/ssl/certs/client.crt"
