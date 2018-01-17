@@ -88,7 +88,7 @@
           restart needed"
   when:  ardana_notify_barbican_api_restart_required.changed
 
-- name: KEYMGR-API | configure  | Configure the barbican_api_server script
+- name: KEYMGR-API | configure  | Configure the barbican_api_server script (legacy)
   template:
     src: "barbican_api_server"
     dest: "{{ barbican_bin_dir }}/barbican_api_server"
@@ -97,6 +97,31 @@
   register: ardana_notify_barbican_api_restart_required
   tags:
     - barbican
+  when: deployer_media_legacy_layout|bool
+
+- name: KEYMGR-API | configure | Create /var/www/barbican directory
+  become: yes
+  file:
+    path: /var/www/barbican
+    owner: "{{ barbican_user }}"
+    group: "{{ barbican_group }}"
+    mode: 0755
+    state: directory
+  tags:
+    - barbican
+
+- name: KEYMGR-API | configure | Create symbolic link for the barbican-api startup
+  become: yes
+  file:
+    src: "{{ barbican_venv_dir }}/bin/barbican-wsgi-api"
+    dest: "/var/www/barbican/api"
+    owner: root
+    group: root
+    state: link
+
+- name: KEYMGR-API | configure | Configure the barbican_api_server vhost (SUSE)
+  include: _configure_vhost.yml
+  when: deployer_media_legacy_layout|bool == false
 
 - name: KEYMGR-API | configure | Create barbican conf symlinks
   become: yes

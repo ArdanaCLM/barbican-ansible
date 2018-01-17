@@ -1,0 +1,11 @@
+# OpenStack Barbican Apache2 configuration
+
+Listen {{ barbican_api_network_address }}:{{ barbican_api_port }}
+
+<VirtualHost {{ barbican_api_network_address }}:{{ barbican_api_port }}>
+    WSGIDaemonProcess barbican-api user={{ barbican_user }} group={{ barbican_group }} processes=3 threads=4 python-path={{ barbican_venv_dir }}:{{barbican_venv_dir }}/lib/python2.7/site-packages/ display-name=barbican-api
+    WSGIScriptAlias / /var/www/barbican/api
+    WSGIProcessGroup barbican-api
+    ErrorLog /var/log/barbican/barbican-api.log
+    CustomLog /var/log/barbican/barbican-api.log combined
+</VirtualHost>
