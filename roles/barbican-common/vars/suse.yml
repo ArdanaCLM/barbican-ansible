@@ -15,8 +15,7 @@
 #
 ---
 barbican_package_dependencies:
-  - python-devel
-  - libffi48-devel
-  - libopenssl-devel
+  - libffi4
   - libmysqlclient18
+  - libopenssl1_0_0
   - python-httplib2
