@@ -20,5 +20,5 @@
   template:
     src: barbican-api-modwsgi.conf.j2
     dest: "{{ apache2_vhost_dir }}/barbican-api-modwsgi.conf"
-    mode: 0755
+    mode: 0644
   register: ardana_notify_barbican_api_restart_required
