@@ -34,35 +34,19 @@
     msg: "barbican_api_activate_result = {{ barbican_api_activate_result }}"
   when: barbican_api_activate_result is defined
 
-- name: KEYMGR-API | start | Restart barbican service
-  service:
-    name: "{{ barbican_api_service_name }}"
-    state: restarted
-  when: (ardana_notify_barbican_api_restart_required is defined and
-        ardana_notify_barbican_api_restart_required.changed and
-        barbican_api_restarted_result is not defined)
-        or barbican_api_restart_required
-  become: yes
-  register: barbican_api_restarted_result
-  tags:
-    - barbican
+- name: KEYMGR-API | start | Restart or start Barbican API (uwsgi)
+  include: start-uwsgi.yml
+  when: deployer_media_legacy_layout|bool
 
-- name: KEYMGR-API | start  | Touch the api vassals file to reload api instance
-  file:
-    path: "{{ barbican_api_config_dir }}/vassals/barbican-api.ini"
-    owner: "{{ barbican_user }}"
-    group: "{{ barbican_group }}"
-    mode: 0600
-    state: touch
-  become: yes
-  become_user: "{{ barbican_user }}"
-  when: (ardana_notify_barbican_api_reload_required is defined and
-        ardana_notify_barbican_api_reload_required.changed and
-        barbican_api_reloaded_result is not defined)
-        or barbican_api_reload_required
-  register: barbican_api_reloaded_result
-  tags:
-    - barbican
+- name: KEYMGR-API | start | Restart or start Barbican API (apache)
+  include: "{{ playbook_dir }}/roles/FND-AP2/tasks/start_reload.yml"
+  vars:
+    apache_reload_requested: False
+    apache_restart_requested: "{{ (
+        ardana_notify_barbican_api_restart_required is defined and
+        ardana_notify_barbican_api_restart_required.changed
+      ) or barbican_api_restart_required }}"
+  when: deployer_media_legacy_layout|bool == False
 
 - name: KEYMGR-API | start | Ensure barbican service is started now
   service:
