@@ -179,7 +179,6 @@
   run_once: True
   become: yes
   become_user: "{{ barbican_user }}"
-  when: barbican_db_auto_create_enabled == False
   tags:
     - barbican
 

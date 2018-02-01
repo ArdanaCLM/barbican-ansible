@@ -1,6 +1,6 @@
 #
 # (c) Copyright 2015-2016 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -148,7 +148,6 @@ barbican_host_set: "{{ groups[verb_hosts.KEYMGR_API]  | default([]) }}"
 # Barbican database version, head means version as per included barbican code base
 # Please see https://github.com/openstack/barbican/blob/stable/liberty/barbican/cmd/db_manage.py#L72
 barbican_db_version: head
-barbican_db_auto_create_enabled: True
 
 # flag set in configure playbooks to trigger services handlers to restart
 barbican_restart_required: False
