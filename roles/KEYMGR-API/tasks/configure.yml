@@ -186,7 +186,7 @@
   become: yes
   file:
     src: "{{ barbican_bin_dir }}/{{ item }}"
-    dest: "/usr/bin/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
     state: link
   with_items:
     - "barbican-manage"
