@@ -15,7 +15,9 @@
 #
 ---
 barbican_package_dependencies:
+  - apache2-mod_wsgi
   - libffi4
   - libmysqlclient18
   - libopenssl1_0_0
+  - logrotate
   - python-httplib2
