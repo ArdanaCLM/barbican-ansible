@@ -18,6 +18,6 @@
   become: yes
   template:
     src: barbican-api-modwsgi.conf.j2
-    dest: "{{ apache2_vhost_dir }}/barbican-api-modwsgi.conf"
+    dest: "{{ apache2_vhost_dir }}/barbican-api-modwsgi.vhost"
     mode: 0644
   register: ardana_notify_barbican_api_restart_required

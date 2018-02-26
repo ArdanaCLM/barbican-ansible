@@ -38,10 +38,21 @@
   include: start-uwsgi.yml
   when: deployer_media_legacy_layout|bool
 
+- name: KEYMGR-API | start | Enable barbican_api_server vhost (apache)
+  file:
+    src: "{{ apache2_vhost_dir }}/barbican-api-modwsgi.vhost"
+    dest: "{{ apache2_vhost_dir }}/barbican-api-modwsgi.conf"
+    state: link
+  become: yes
+  register: barbican_api_a2_enable_vhost_result
+  when: deployer_media_legacy_layout|bool == false
+
 - name: KEYMGR-API | start | Restart or start Barbican API (apache)
   include: "{{ playbook_dir }}/roles/FND-AP2/tasks/start_reload.yml"
   vars:
-    apache_reload_requested: False
+    apache_reload_requested: "{{
+      barbican_api_a2_enable_vhost_result is defined and
+      barbican_api_a2_enable_vhost_result.changed }}"
     apache_restart_requested: "{{ (
         ardana_notify_barbican_api_restart_required is defined and
         ardana_notify_barbican_api_restart_required.changed
@@ -53,5 +64,6 @@
     name: "{{ barbican_api_service_name }}"
     state: started
   become: yes
+  when: deployer_media_legacy_layout|bool
   tags:
     - barbican

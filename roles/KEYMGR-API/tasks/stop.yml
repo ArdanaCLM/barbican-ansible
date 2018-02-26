@@ -23,7 +23,7 @@
   become: yes
   when: deployer_media_legacy_layout|bool
 
-- name: KEYMGR-API | stop | Remove vhost config for Barbican API service (apache)
+- name: KEYMGR-API | stop | Disable Barbican API vhost (apache)
   file:
     state: absent
     path: "{{ apache2_vhost_dir }}/barbican-api-modwsgi.conf"
