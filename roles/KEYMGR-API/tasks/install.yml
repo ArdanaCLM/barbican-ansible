@@ -144,15 +144,3 @@
     state: directory
   tags:
     - barbican
-
-- name: KEYMGR-API | install | Register barbican-api as a service
-  become: yes
-  setup_systemd:
-    service: "{{ barbican_api_service_name }}"
-    user: "{{ barbican_user }}"
-    group: "{{ barbican_group }}"
-    cmd: "barbican_api_server"
-    args: 'start'
-  when: deployer_media_legacy_layout|bool
-  tags:
-    - barbican

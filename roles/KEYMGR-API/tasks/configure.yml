@@ -56,7 +56,7 @@
   include: configure_features.yml
 
 - name: KEYMGR-API | configure  |
-    Copies policy, barbican.conf, paste ini, api logging, audit map, uwsgi
+    Copies policy, barbican.conf, paste ini, api logging, audit map
     vassal files
   template:
     src: "{{ item.src }}"
@@ -88,17 +88,6 @@
           restart needed"
   when:  ardana_notify_barbican_api_restart_required.changed
 
-- name: KEYMGR-API | configure  | Configure the barbican_api_server script (legacy)
-  template:
-    src: "barbican_api_server"
-    dest: "{{ barbican_bin_dir }}/barbican_api_server"
-    mode: "u=rwx,g=rx,o=rx"
-  become: yes
-  register: ardana_notify_barbican_api_restart_required
-  tags:
-    - barbican
-  when: deployer_media_legacy_layout|bool
-
 - name: KEYMGR-API | configure | Create /var/www/barbican directory
   become: yes
   file:
@@ -121,7 +110,6 @@
 
 - name: KEYMGR-API | configure | Configure the barbican_api_server vhost (SUSE)
   include: _configure_vhost.yml
-  when: deployer_media_legacy_layout|bool == false
 
 - name: KEYMGR-API | configure | Create barbican conf symlinks
   become: yes

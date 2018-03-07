@@ -16,23 +16,14 @@
 #
 ---
 
-- name: KEYMGR-API | stop | Stop Barbican API service (uwsgi)
-  service:
-    name: "{{ barbican_api_service_name }}"
-    state: stopped
-  become: yes
-  when: deployer_media_legacy_layout|bool
-
 - name: KEYMGR-API | stop | Disable Barbican API vhost (apache)
   file:
     state: absent
     path: "{{ apache2_vhost_dir }}/barbican-api-modwsgi.conf"
   become: yes
-  when: deployer_media_legacy_layout|bool == False
 
 - name: KEYMGR-API | stop | Reload apache so that Barbican API is stopped (apache)
   service:
     name: apache2
     state: reloaded
   become: yes
-  when: deployer_media_legacy_layout|bool == False
