@@ -22,7 +22,7 @@
 - name: KEYMGR-API | install | Install OS specific required packages (legacy)
   become: yes
   package:
-    state: latest
+    state: present
     name: "{{ item }}"
   with_items: barbican_package_dependencies
   tags:
@@ -31,7 +31,7 @@
 - name: KEYMGR-API | install | Install OS specific required packages
   become: yes
   package:
-    state: latest
+    state: present
     name: "{{ item }}"
   with_items:
     - crudini
