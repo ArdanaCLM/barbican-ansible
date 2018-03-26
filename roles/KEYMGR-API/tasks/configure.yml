@@ -88,10 +88,10 @@
           restart needed"
   when:  ardana_notify_barbican_api_restart_required.changed
 
-- name: KEYMGR-API | configure | Create /var/www/barbican directory
+- name: KEYMGR-API | configure | Create barbican WSGI directory
   become: yes
   file:
-    path: /var/www/barbican
+    path: "{{ www_root }}/barbican"
     owner: "{{ barbican_user }}"
     group: "{{ barbican_group }}"
     mode: 0755
@@ -103,7 +103,7 @@
   become: yes
   file:
     src: "{{ barbican_venv_dir }}/bin/barbican-wsgi-api"
-    dest: "/var/www/barbican/api"
+    dest: "{{ www_root }}/barbican/api"
     owner: root
     group: root
     state: link
