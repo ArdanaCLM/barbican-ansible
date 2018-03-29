@@ -14,6 +14,16 @@
 # under the License.
 #
 ---
-- include: _barbican-schedule-restart.yml
+- name: barbican-common | _schedule_restart |
+    Schedule a restart for barbican-api
+  debug:
+    msg: "Trigger a change notification in barbican-api"
+  changed_when: true
+  register: ardana_notify_barbican_api_restart_required
 
-- include: barbican-start.yml
+- name: barbican-common | _schedule_restart |
+    Schedule a restart for barbican-worker
+  debug:
+    msg: "Trigger a change notification in barbican-worker"
+  changed_when: true
+  register: ardana_notify_barbican_worker_restart_required
