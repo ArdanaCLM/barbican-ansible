@@ -42,6 +42,7 @@
   with_items:
     - "/var/log/barbican/barbican.log"
     - "/var/log/barbican/barbican-json.log"
+    - "/var/log/barbican/barbican-api.log"
     - "/var/log/barbican/barbican-access.log"
     - "/var/log/barbican/barbican-monitor.log"
   tags:
