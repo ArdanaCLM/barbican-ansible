@@ -35,7 +35,6 @@
     name: "{{ item }}"
   with_items:
     - crudini
-  when: deployer_media_legacy_layout|bool == False
   tags:
     - barbican
 
