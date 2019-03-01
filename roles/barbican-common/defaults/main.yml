@@ -1,6 +1,6 @@
 #
 # (c) Copyright 2015-2016 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017-2018 SUSE LLC
+# (c) Copyright 2017-2019 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -16,7 +16,7 @@
 #
 ---
 
-barbican_home_dir: /home/barbican
+barbican_home_dir: /var/lib/barbican
 barbican_user: barbican
 barbican_group: barbican
 barbican_centralized_log_group: adm
