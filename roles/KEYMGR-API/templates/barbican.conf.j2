@@ -144,20 +144,18 @@ max_limit_paging = 100
 #   For example: transport_url = rabbit://guest@192.168.50.8:5672,guest@192.168.50.9:5672/
 transport_url = {{ barbican_transport_url }}
 
-# oslo notification driver for sending audit events via audit middleware.
-# Meaningful only when middleware is enabled in barbican paste ini file.
-# This is oslo config MultiStrOpt so can be defined multiple times in case
-# there is need to route audit event to messaging as well as log.
-# notification_driver = messagingv2
-# notification_driver = log
-notification_driver = {{ notification_driver_name }}
-
 # ================= Queue Options - oslo.messaging ==========================
 
 [oslo_messaging_rabbit]
 # Rabbit and HA configuration:
 #ampq_durable_queues = True
 ssl = {{ barbican_rabbit_use_ssl }}
+
+[oslo_messaging_notifications]
+# The Drivers(s) to handle sending notifications. Possible values are
+# messaging, messagingv2, routing, log, test, noop (multi valued)
+# Deprecated group/name - [DEFAULT]/notification_driver
+driver = {{ notification_driver_name }}
 
 [keystone_authtoken]
 auth_type = password
