@@ -29,14 +29,14 @@ barbican_logstash_loglevel: "{{ ardana_loglevel | default('INFO') }}"
 # If dynamically calculated value is less than 8, then 8 is used.
 # Max count needs to be greater than min count (below). If its set to lower or equal
 # value, then max count is updated to be 4 higher than min count.
-barbican_api_max_worker_count:  "{{ ansible_processor_count * ansible_processor_cores * 2| default('8') }}"
+barbican_api_max_worker_count:  "{{ [8, ansible_processor_vcpus] | max }}"
 
 # Minimum number of idle workers to be kept running.
-barbican_api_min_worker_count: 4
+barbican_api_min_worker_count: "{{ [4, [1, ansible_processor_vcpus / 4] | max] | min }}"
 
 # Number of workers to create at barbican api server startup
 #barbican_api_initial_worker_count: 6
-barbican_api_initial_worker_count: 4
+barbican_api_initial_worker_count: "{{ barbican_api_min_worker_count }}"
 
 # Multi-processing is used instead of threading. Threads are kept 1
 # Python threading is useful in high IO load interactions.
