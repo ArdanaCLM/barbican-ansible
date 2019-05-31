@@ -32,7 +32,7 @@ barbican_logstash_loglevel: "{{ ardana_loglevel | default('INFO') }}"
 barbican_api_max_worker_count:  "{{ [8, ansible_processor_vcpus] | max }}"
 
 # Minimum number of idle workers to be kept running.
-barbican_api_min_worker_count: "{{ [4, [1, ansible_processor_vcpus / 4] | max] | min }}"
+barbican_api_min_worker_count: "{{ [4, [1, ansible_processor_vcpus / 4] | max] | min | int }}"
 
 # Number of workers to create at barbican api server startup
 #barbican_api_initial_worker_count: 6
