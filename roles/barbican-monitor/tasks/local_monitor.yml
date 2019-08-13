@@ -32,7 +32,7 @@
     name: "httpcheck"
     args: >
         use_keystone=False
-        url=http://{{ barbican_api_network_address }}:{{ item.port }}
+        url=http://{{ barbican_api_network_address | ipwrap }}:{{ item.port }}
         dimensions=service:key-manager,component:barbican-api,api_endpoint:{{ item.api_endpoint }},monitored_host_type:instance
   with_items:
     - [{ api_endpoint: 'internal', port: "{{ barbican_internal_vip_port }}"} ]

@@ -22,7 +22,7 @@
 
 - name:  KEYMGR-API | status | Register barbican status
   uri:
-    url: "http://{{ barbican_api_network_address }}:{{ barbican_api_port }}"
+    url: "http://{{ barbican_api_network_address | ipwrap }}:{{ barbican_api_port }}"
     status_code: 300
     timeout: 600
   register: barbican_status_result
