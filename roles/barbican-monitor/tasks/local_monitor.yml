@@ -39,3 +39,13 @@
   tags:
     - barbican
     - barbican_monitor
+
+- name: barbican-monitor | local_monitor | Check ardana-node-cert
+  become: yes
+  stat:
+    path: "{{ ardana_node_cert }}"
+  register: ardana_node_cert_check_result
+
+- name: barbican-monitor | local_monitor | Monitor ardana-node-cert
+  include: configure_tls.yml
+  when: ardana_node_cert_check_result.stat.exists

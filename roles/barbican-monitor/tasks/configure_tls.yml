@@ -1,0 +1,44 @@
+#
+# (c) Copyright 2020 SUSE LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+# NOTE(gyee): Since the provisioned TLS server certificate is consisted of
+# both certificate and private key, we need to separate out the certificate
+# protion for monitoring without having to compromise the private key.
+# This is done by copying the certificate to a different file and make it
+# readable by the world. Making certificate readable by the world is NOT a
+# problem as it is TLS certificate is public information.
+- name: barbican-monitor | configure_tls | Separate out ardana node TLS cert
+  become: yes
+  shell: >
+    openssl x509 -in {{ ardana_node_cert }}
+    -out {{ ardana_node_cert_monitoring }} -outform PEM
+
+- name: barbican-monitor | configure_tls |
+        Make sure ardana node monitoring cert is readable
+  become: yes
+  file:
+    path: "{{ ardana_node_cert_monitoring }}"
+    mode: '0644'
+
+- name: barbican-monitor | configure_tls |
+        Run Monasca detection plugin for ardana node cert
+  become: yes
+  monasca_agent_plugin:
+    name: CertificateFileCheck
+    args:
+      cert_files: "{{ ardana_node_cert_monitoring }}"
+      dimensions: "service:barbican"
+
