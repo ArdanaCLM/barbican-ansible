@@ -35,6 +35,7 @@
     "container_acl_read": "'read':%(target.container.read)s",
     "container_private_read": "'False':%(target.container.read_project_access)s",
     "container_creator_user": "user:%(target.container.creator_id)s",
+    "container_project_creator_role": "rule:creator and rule:container_project_match",
 
     "secret_non_private_read": "rule:all_users and rule:secret_project_match and not rule:secret_private_read",
     "secret_decrypt_non_private_read": "rule:all_but_audit and rule:secret_project_match and not rule:secret_private_read",
@@ -65,8 +66,8 @@
     "containers:get": "rule:all_but_audit",
     "container:get": "rule:container_non_private_read or rule:container_project_creator or rule:container_project_admin or rule:container_acl_read",
     "container:delete": "rule:container_project_admin or rule:container_project_creator",
-    "container_secret:post": "rule:admin",
-    "container_secret:delete": "rule:admin",
+    "container_secret:post": "rule:container_project_admin or rule:container_project_creator or rule:container_project_creator_role and rule:container_non_private_read",
+    "container_secret:delete": "rule:container_project_admin or rule:container_project_creator or rule:container_project_creator_role and rule:container_non_private_read",
     "transport_key:get": "rule:all_users",
     "transport_key:delete": "rule:admin",
     "transport_keys:get": "rule:all_users",
